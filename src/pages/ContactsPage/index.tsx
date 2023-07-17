@@ -1,12 +1,12 @@
-import { ConfigProvider, Input } from "antd";
+import { ConfigProvider, Input, Select as DropdownSelect } from "antd";
 import ContactCard from "../../components/cards/ContactCard";
 import contactsList from "../../constants/contacts/sillyData";
 import { useMemo, useState } from "react";
-const { Search } = Input;
+const { Search: InputSeach } = Input;
 
 const ContactsPage = () => {
   const [searchQuery, setSearchQuery] = useState("");
-
+  const [tagSearchQuery, setTagSearchQuery] = useState("");
   const onSearch = (value: string) => {
     setSearchQuery(value);
   };
@@ -17,18 +17,18 @@ const ContactsPage = () => {
     return contactsList.filter(({ name, phone, email, tags }) => {
       const lowerCaseName = name.toLowerCase();
       const lowerCaseEmail = email.toLowerCase();
-      const matchingTags = tags.filter((tag) =>
-        tag.toLowerCase().includes(lowerCaseQuery)
+      const matchingTags = tags.some(
+        (tag) => tag.includes(tagSearchQuery) || !tagSearchQuery
       );
 
       return (
-        lowerCaseName.includes(lowerCaseQuery) ||
-        phone.includes(searchQuery) ||
-        lowerCaseEmail.includes(lowerCaseQuery) ||
-        matchingTags.length > 0
+        (lowerCaseName.includes(lowerCaseQuery) ||
+          phone.includes(searchQuery) ||
+          lowerCaseEmail.includes(lowerCaseQuery)) &&
+        matchingTags
       );
     });
-  }, [searchQuery]);
+  }, [tagSearchQuery, searchQuery]);
 
   return (
     <div className="w-full py-8">
@@ -42,13 +42,27 @@ const ContactsPage = () => {
               },
             }}
           >
-            <Search
+            <InputSeach
               placeholder="Find the contact here"
-              className="text-main-clr"
+              className="text-main-clr mr-2"
               allowClear
               onSearch={onSearch}
               style={{ width: 400 }}
               size="middle"
+            />
+            <DropdownSelect
+              defaultValue=""
+              style={{ width: 180 }}
+              allowClear
+              options={[
+                { value: "job", label: "job" },
+                { value: "family", label: "family" },
+              ]}
+              onChange={(value: string) => {
+                console.log(value);
+                setTagSearchQuery(value);
+              }}
+              placeholder="Select hashtag"
             />
           </ConfigProvider>
         </div>

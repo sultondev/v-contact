@@ -6,14 +6,14 @@ type NavbarDataTypes = {
 
 const navbarData: NavbarDataTypes[] = [
   {
-    name: "Dashboard",
-    path: "/dashboard",
-    icon: "ion:home",
-  },
-  {
     name: "Contacts",
     path: "/contacts",
     icon: "typcn:contacts",
+  },
+  {
+    name: "Tags",
+    path: "/tags",
+    icon: "ion:home",
   },
   {
     name: "Profile",
