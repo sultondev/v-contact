@@ -1,0 +1,12 @@
+.sidebar {
+    @apply py-9;
+}
+
+.sidebar-open {
+    @apply min-w-[246px] px-6;
+}
+
+.nav-open {
+    @apply w-full;
+}
+

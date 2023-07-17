@@ -1,3 +1,7 @@
 .rounded-box {
-    @apply bg-white px-4 py-3 rounded-[15px] ;
+    @apply bg-white px-4 py-3 rounded-[15px] m-0 transition-all duration-500;
+}
+
+.rounded-box__unselected {
+    @apply bg-transparent hover:bg-white #{!important};
 }
