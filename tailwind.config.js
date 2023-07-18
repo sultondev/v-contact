@@ -9,7 +9,8 @@ export default {
   theme: {
     extend: {
       gridTemplateColumns: {
-        'contacts-cards': 'repeat(8, minmax(126px, 126px))',
+        'contacts-cards': 'repeat(auto-fit, minmax(126px, 126px))',
+        'tags-cards': 'repeat(auto-fit, minmax(92px, 100px))'
       },
       boxShadow: {
         regularBox: '0px 3.500000238418579px 5.500000476837158px 0px rgba(0, 0, 0, 0.02);'

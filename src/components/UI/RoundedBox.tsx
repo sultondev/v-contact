@@ -14,7 +14,7 @@ type Props = {
   classes?: string;
   handleClick?: () => void;
   path?: string;
-} & (BoxTypeLink | { boxType: "wrapper" });
+} & (BoxTypeLink | { boxType: "wrapper" } | { boxType: "button" });
 
 const RoundedBox: React.FC<Props> = (props: Props) => {
   const { handleClick, children, boxType, path, classes = "" } = props;
@@ -24,6 +24,12 @@ const RoundedBox: React.FC<Props> = (props: Props) => {
       <Link to={path} className={`rounded-box ${classes || ""}`}>
         {children}
       </Link>
+    );
+  } else if (boxType === "button") {
+    return (
+      <button onClick={handleClick} className={`rounded-box ${classes}`}>
+        {children}
+      </button>
     );
   }
 

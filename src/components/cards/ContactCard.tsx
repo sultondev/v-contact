@@ -5,18 +5,18 @@ import { Icon } from "@iconify/react";
 type Props = {
   phone: string;
   name: string;
-  createdAt: Date;
+  classes: string;
 };
 
 const ContactCard: React.FC<Props> = (props: Props) => {
-  const { name, phone, createdAt } = props;
+  const { name, phone, classes } = props;
   return (
     <RoundedBox
       boxType="wrapper"
       handleClick={() => {
         console.log("dwa");
       }}
-      classes="min-w-[126px] group hover:bg-[#E9FFFB] cursor-pointer hover:scale-105"
+      classes={`min-w-[126px] group hover:bg-[#E9FFFB] cursor-pointer hover:scale-105 ${classes}`}
     >
       <div>
         <div className="bg-main-clr p-2 rounded-xl w-fit mx-auto mb-5">
