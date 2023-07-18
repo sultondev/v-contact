@@ -3,6 +3,7 @@ export interface Contact {
   phone: string;
   email: string;
   tags: ContactTagProps[];
+  id?: string;
 }
 
 export interface ContactTagProps {

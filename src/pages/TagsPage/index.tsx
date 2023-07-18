@@ -1,8 +1,4 @@
-import {
-  collection,
-  onSnapshot,
-  query,
-} from "firebase/firestore";
+import { collection, onSnapshot, query } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import { db } from "../../components/firebase";
 import TagCard from "../../components/cards/TagCard";
@@ -11,8 +7,6 @@ import { Icon } from "@iconify/react";
 import ContactForm from "../../components/forms/ContactForm";
 import { Modal } from "antd";
 import { TagTypes } from "../../typing/types/contact";
-
-
 
 const TagsPage = () => {
   const [tags, setTags] = useState<TagTypes[]>([]);
@@ -47,7 +41,6 @@ const TagsPage = () => {
       setTags(tagsArr);
     });
   }, []);
-  console.log(tags);
   return (
     <div className="w-full py-8">
       <Modal

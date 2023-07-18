@@ -1,33 +1,23 @@
-import {
-  ConfigProvider,
-  Input,
-  Select as DropdownSelect,
-  Modal,
-} from "antd";
+import { ConfigProvider, Input, Select as DropdownSelect, Modal } from "antd";
 import ContactCard from "../../components/cards/ContactCard";
 import { useEffect, useMemo, useState } from "react";
 import RoundedBox from "../../components/UI/RoundedBox";
 import { Icon } from "@iconify/react/dist/iconify.js";
 import ContactForm from "../../components/forms/ContactForm";
-import {
-  addDoc,
-  collection,
-  onSnapshot,
-  query,
-} from "@firebase/firestore";
-import { Contact, TagTypes } from "../../typing/types/contact";
+import { addDoc, collection, onSnapshot, query } from "@firebase/firestore";
+import { Contact } from "../../typing/types/contact";
 import { db } from "../../components/firebase";
 import { DatabaseCollections } from "../../constants/DatabaseCollections";
-import { useSelector } from "react-redux";
+// import { useSelector } from "react-redux";
 const { Search: InputSeach } = Input;
 
 const ContactsPage = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [, setTagSearchQuery] = useState("");
-  const tags = useSelector(
-    (state: { tags: { tags: TagTypes[] } }) => state.tags.tags
-  ); // Access the tags array from the Redux store
-  console.log(tags);
+  // const tags = useSelector(
+  //   (state: { tags: { tags: TagTypes[] } }) => state.tags.tags
+  // ); // Access the tags array from the Redux store
+  // console.log(tags);
 
   const onSearch = (value: string) => {
     setSearchQuery(value);
@@ -55,7 +45,6 @@ const ContactsPage = () => {
   useEffect(() => {
     fetchContacts();
   }, []);
-  console.log(contacts);
 
   function fetchContacts() {
     const q = query(collection(db, "contacts"));
@@ -139,7 +128,6 @@ const ContactsPage = () => {
                     { value: "family", label: "family" },
                   ]}
                   onChange={(value: string) => {
-                    console.log(value);
                     setTagSearchQuery(value);
                   }}
                   size="large"
@@ -164,7 +152,7 @@ const ContactsPage = () => {
             {filteredContacts.map((contactItem) => {
               return (
                 <ContactCard
-                  key={contactItem.phone}
+                  key={contactItem.id || crypto.randomUUID()}
                   name={contactItem.name}
                   classes={`!shadow-regular-box`}
                   phone={contactItem.phone}
