@@ -2,36 +2,28 @@ import {
   ConfigProvider,
   Input,
   Select as DropdownSelect,
-  Button,
   Modal,
-  notification,
 } from "antd";
 import ContactCard from "../../components/cards/ContactCard";
-import React, { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import RoundedBox from "../../components/UI/RoundedBox";
 import { Icon } from "@iconify/react/dist/iconify.js";
 import ContactForm from "../../components/forms/ContactForm";
 import {
   addDoc,
   collection,
-  doc,
   onSnapshot,
   query,
-  setDoc,
 } from "@firebase/firestore";
-import { Contact, ContactTagProps, TagTypes } from "../../typing/types/contact";
+import { Contact, TagTypes } from "../../typing/types/contact";
 import { db } from "../../components/firebase";
 import { DatabaseCollections } from "../../constants/DatabaseCollections";
-import { NotificationPlacement } from "antd/es/notification/interface";
 import { useSelector } from "react-redux";
 const { Search: InputSeach } = Input;
 
-const Context = React.createContext({ name: "Default" });
-
 const ContactsPage = () => {
   const [searchQuery, setSearchQuery] = useState("");
-  const [tagSearchQuery, setTagSearchQuery] = useState("");
-  const [api, contextHolder] = notification.useNotification();
+  const [, setTagSearchQuery] = useState("");
   const tags = useSelector(
     (state: { tags: { tags: TagTypes[] } }) => state.tags.tags
   ); // Access the tags array from the Redux store
@@ -42,7 +34,7 @@ const ContactsPage = () => {
   };
 
   const [contacts, setContacts] = useState<Contact[] | []>([]);
-  const [loading, setLoading] = useState(false);
+  const [, setLoading] = useState(false);
   const [open, setOpen] = useState(false);
 
   const showModal = () => {
@@ -68,7 +60,7 @@ const ContactsPage = () => {
   function fetchContacts() {
     const q = query(collection(db, "contacts"));
 
-    const unsubscribe = onSnapshot(q, (QuerySnapshot) => {
+    onSnapshot(q, (QuerySnapshot) => {
       const contactsArr: Contact[] = [];
       QuerySnapshot.forEach((doc) => {
         // @ts-ignore
@@ -89,7 +81,7 @@ const ContactsPage = () => {
   const filteredContacts = useMemo(() => {
     const lowerCaseQuery = searchQuery.toLowerCase();
 
-    return contacts.filter(({ name, phone, email, tags }) => {
+    return contacts.filter(({ name, phone, email }) => {
       const lowerCaseName = name.toLowerCase();
       const lowerCaseEmail = email.toLowerCase();
       // const matchingTags = tags.some(
@@ -102,7 +94,7 @@ const ContactsPage = () => {
         lowerCaseEmail.includes(lowerCaseQuery)
       );
     });
-  }, [contacts, tagSearchQuery, searchQuery]);
+  }, [contacts, searchQuery]);
 
   return (
     <>

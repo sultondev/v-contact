@@ -1,4 +1,4 @@
-import { getFirestore, collection, getDocs } from "firebase/firestore";
+import { getFirestore } from "firebase/firestore";
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
 // TODO: Add SDKs for Firebase products that you want to use
@@ -33,8 +33,6 @@ const firebaseConfig: FirebaseConfigTypes = {
 const app = initializeApp(firebaseConfig);
 
 const db = getFirestore(app);
-
-const colRef = collection(db, "tags");
 
 
 // export const auth = app.auth();

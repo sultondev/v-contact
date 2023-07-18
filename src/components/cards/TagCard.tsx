@@ -9,7 +9,7 @@ type Props = {
 };
 
 const TagCard: React.FC<Props> = (props: Props) => {
-  const { id, value, classes } = props;
+  const { value, classes } = props;
   return (
     <RoundedBox
       boxType="wrapper"

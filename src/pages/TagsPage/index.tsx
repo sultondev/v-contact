@@ -16,7 +16,7 @@ import { TagTypes } from "../../typing/types/contact";
 
 const TagsPage = () => {
   const [tags, setTags] = useState<TagTypes[]>([]);
-  const [loading, setLoading] = useState(false);
+  const [, setLoading] = useState(false);
   const [open, setOpen] = useState(false);
 
   const showModal = () => {
@@ -38,7 +38,7 @@ const TagsPage = () => {
   useEffect(() => {
     const q = query(collection(db, "tags"));
 
-    const unsubscribe = onSnapshot(q, (QuerySnapshot) => {
+    onSnapshot(q, (QuerySnapshot) => {
       const tagsArr: TagTypes[] = [];
       QuerySnapshot.forEach((doc) => {
         // @ts-ignore

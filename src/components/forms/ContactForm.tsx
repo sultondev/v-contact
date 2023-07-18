@@ -1,4 +1,4 @@
-import { Button, Form, Input, Select, TagProps, ConfigProvider } from "antd";
+import { Button, Form, Input, Select, ConfigProvider } from "antd";
 import React, { useState } from "react";
 import { Contact, ContactTagProps } from "../../typing/types/contact";
 
@@ -13,9 +13,9 @@ const layout = {
   wrapperCol: { span: 16 },
 };
 
-const tailLayout = {
-  wrapperCol: { offset: 8, span: 12 },
-};
+// const tailLayout = {
+//   wrapperCol: { offset: 8, span: 12 },
+// };
 
 const ContactForm: React.FC<ContactFormProps> = ({
   onSubmit,
