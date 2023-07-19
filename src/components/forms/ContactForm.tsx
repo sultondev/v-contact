@@ -1,6 +1,7 @@
 import { Button, Form, Input, Select, ConfigProvider } from "antd";
 import React, { useState } from "react";
 import { Contact, ContactTagProps } from "../../typing/types/contact";
+import { useEffect } from "react";
 
 interface ContactFormProps {
   onSubmit: (contact: Contact) => Promise<void> | void;
@@ -26,10 +27,13 @@ const ContactForm: React.FC<ContactFormProps> = ({
   const [selectedTags, setSelectedTags] = useState<ContactTagProps[] | []>(
     initialContact.tags || []
   );
+  useEffect(() => {
+    form.setFieldsValue(initialContact); // Use setFieldsValue to set multiple fields at once
+    setSelectedTags(initialContact.tags);
+  }, [form, initialContact]);
 
   const handleSubmit = async (values: Contact) => {
-    const { name, phone, email, tags } = values;
-    const contact: Contact = { name, phone, email, tags };
+    const contact: Contact = { ...values, id: initialContact.id }; // Use object destructuring to copy values
     await onSubmit(contact);
     form.resetFields();
   };
@@ -84,7 +88,7 @@ const ContactForm: React.FC<ContactFormProps> = ({
       <Form.Item
         name="tags"
         label="Tags"
-        rules={[{ required: true, message: "Please select at least one tag" }]}
+        rules={[{ required: false, message: "Please select at least one tag" }]}
       >
         <Select
           mode="multiple"
@@ -111,20 +115,25 @@ const ContactForm: React.FC<ContactFormProps> = ({
           }}
         >
           <Button
-            type="default"
             className="mr-1"
             size="large"
             htmlType="submit"
+            loading={true}
           >
             {initialContact.name ? "Update Contact" : "Create Contact"}
           </Button>
-          <Button
-            size="large"
-            htmlType="button"
-            onClick={() => form.resetFields()}
-          >
-            Reset
-          </Button>
+          {initialContact.name === "" ? (
+            <Button
+              size="large"
+              htmlType="button"
+              type="dashed"
+              onClick={() => form.resetFields()}
+            >
+              Reset
+            </Button>
+          ) : (
+            <></>
+          )}
         </ConfigProvider>
       </div>
       {/* </Form.Item> */}

@@ -7,6 +7,7 @@ import React from "react";
 
 const SideBarLayout: React.FC = () => {
   const { pathname } = useLocation();
+
   return (
     <div className="flex bg-main-bg min-h-screen">
       <Sidebar />

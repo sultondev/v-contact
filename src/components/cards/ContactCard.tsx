@@ -6,16 +6,16 @@ type Props = {
   phone: string;
   name: string;
   classes: string;
+  handleClick?: () => void;
 };
 
 const ContactCard: React.FC<Props> = (props: Props) => {
-  const { name, phone, classes } = props;
+  const { name, phone, classes, handleClick } = props;
+
   return (
     <RoundedBox
-      boxType="wrapper"
-      handleClick={() => {
-        console.log("dwa");
-      }}
+      boxType="button"
+      handleClick={handleClick}
       classes={`min-w-[126px] group hover:bg-[#E9FFFB] cursor-pointer hover:scale-105 ${classes}`}
     >
       <div>

@@ -6,16 +6,15 @@ type Props = {
   id: string;
   value: string;
   classes: string;
+  handleClick?: () => void;
 };
 
 const TagCard: React.FC<Props> = (props: Props) => {
-  const { value, classes } = props;
+  const { value, classes, handleClick } = props;
   return (
     <RoundedBox
       boxType="wrapper"
-      handleClick={() => {
-        console.log("dwa");
-      }}
+      handleClick={handleClick}
       classes={`!px-0 group hover:bg-[#E9FFFB] cursor-pointer hover:scale-105 ${classes}`}
     >
       <div>

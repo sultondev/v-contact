@@ -1,18 +1,33 @@
-import { ConfigProvider, Input, Select as DropdownSelect, Modal } from "antd";
+import {
+  ConfigProvider,
+  Input,
+  Select as DropdownSelect,
+  Modal,
+} from "antd";
 import ContactCard from "../../components/cards/ContactCard";
 import { useEffect, useMemo, useState } from "react";
 import RoundedBox from "../../components/UI/RoundedBox";
 import { Icon } from "@iconify/react/dist/iconify.js";
 import ContactForm from "../../components/forms/ContactForm";
-import { addDoc, collection, onSnapshot, query } from "@firebase/firestore";
+import {
+  addDoc,
+  collection,
+  onSnapshot,
+  query,
+  updateDoc,
+  doc,
+} from "@firebase/firestore";
 import { Contact } from "../../typing/types/contact";
 import { db } from "../../components/firebase";
 import { DatabaseCollections } from "../../constants/DatabaseCollections";
 // import { useSelector } from "react-redux";
 const { Search: InputSeach } = Input;
+const initialContact = { name: "", phone: "", email: "", tags: [] };
 
 const ContactsPage = () => {
   const [searchQuery, setSearchQuery] = useState("");
+  const [selectedContact, setSelectedContact] =
+    useState<Contact>(initialContact);
   const [, setTagSearchQuery] = useState("");
   // const tags = useSelector(
   //   (state: { tags: { tags: TagTypes[] } }) => state.tags.tags
@@ -41,10 +56,15 @@ const ContactsPage = () => {
 
   const handleCancel = () => {
     setOpen(false);
+    setSelectedContact(initialContact);
   };
   useEffect(() => {
     fetchContacts();
   }, []);
+
+  function createDocRef(id: string) {
+    return doc(db, DatabaseCollections.contacts, id);
+  }
 
   function fetchContacts() {
     const q = query(collection(db, "contacts"));
@@ -60,11 +80,28 @@ const ContactsPage = () => {
   }
 
   async function addContact(data: Contact) {
-    await addDoc(collection(db, DatabaseCollections.contacts), {
-      ...data,
-    }).then(() => {
-      fetchContacts();
-    });
+    if (selectedContact.name.length > 0 && data.id) {
+      const ref = createDocRef(data.id);
+      await updateDoc(ref, {
+        ...data,
+      }).then(() => {
+        handleCancel();
+        fetchContacts();
+      });
+    } else {
+      console.log("create", data);
+      const values = {
+        name: data.name,
+        email: data.email,
+        phone: data.phone,
+        tags: data.tags,
+      };
+      await addDoc(collection(db, DatabaseCollections.contacts), {
+        ...values,
+      }).then(() => {
+        fetchContacts();
+      });
+    }
   }
 
   const filteredContacts = useMemo(() => {
@@ -96,6 +133,7 @@ const ContactsPage = () => {
       >
         <ContactForm
           onSubmit={addContact}
+          initialContact={selectedContact || initialContact}
           tagOptions={[{ value: "dwadwa", label: "dwadw" }]}
         />
       </Modal>
@@ -149,17 +187,22 @@ const ContactsPage = () => {
             </div>
           </div>
           <div className="grid grid-cols-contacts-cards justify-center gap-8">
-            {filteredContacts.map((contactItem) => {
+            {filteredContacts.map((contactItem: Contact) => {
               return (
                 <ContactCard
                   key={contactItem.id || crypto.randomUUID()}
                   name={contactItem.name}
                   classes={`!shadow-regular-box`}
                   phone={contactItem.phone}
+                  handleClick={() => {
+                    setSelectedContact(contactItem);
+                    showModal();
+                  }}
                 />
               );
             })}
           </div>
+          
         </div>
       </div>
     </>
